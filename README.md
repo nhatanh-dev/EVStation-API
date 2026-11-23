@@ -1,22 +1,19 @@
 # ⚡ EvoltStation – EV Charging Management System (Backend API)
 
-> 🍴 Đây là bản fork từ repo nhóm [DatNguyenSE/EVStation-API](https://github.com/DatNguyenSE/EVStation-API) · Frontend: [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client)
+> Fork từ repository của nhóm: [DatNguyenSE/EVStation-API](https://github.com/DatNguyenSE/EVStation-API) · Frontend: [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client)
 > 🔗 **Live demo:** https://evoltstation.io.vn
 
 EvoltStation là nền tảng quản lý trạm sạc xe điện: đặt chỗ, sạc bằng QR, ví điện tử, giám sát phiên sạc thời gian thực và dashboard quản trị.
 
-## 👤 Phần tui làm (nhatanh-dev)
+## 👤 Vai trò & đóng góp
 
-Khoảng 37% commit backend (58/156, 10/2025 → 11/2025). Các phần chính:
+**Backend Developer** · [@nhatanh-dev](https://github.com/nhatanh-dev) · 10/2025 – 11/2025
 
-- **Luồng phiên sạc lõi** (bắt đầu → theo dõi trực tiếp → dừng → hóa đơn): tui tạo `ChargingHub` (SignalR) và `ChargingSimulationService` để đẩy % pin, chi phí và thời gian còn lại xuống client theo thời gian thực, thêm API reconnect khi client mất kết nối.
-- **Phí & luật vận hành chạy nền:** phí chiếm chỗ sau khi sạc xong (`IdleFeeService`), theo dõi reservation (`ReservationMonitorService`), cơ chế nợ tài xế, tự động ban/unban khi vi phạm luật đặt chỗ, có gửi email thông báo. Tất cả chạy bằng `BackgroundService`.
-- **Tài xế vãng lai (walk-in):** validate mã QR trụ sạc, gợi ý đăng ký tài khoản sau phiên sạc và đồng bộ dữ liệu khách, upload giấy tờ xe.
-- **Quản lý vận hành:** Station / Charging Post (QR code bằng QRCoder), Vehicle & VehicleModel, phân ca nhân viên (Assignment roster), lịch sử phiên sạc theo từng vai trò, thống kê doanh thu cho Admin/Manager.
-- **Dữ liệu & triển khai:** EF Core migrations + seed dữ liệu demo, cấu hình CORS và deploy lên VPS.
-- Phía frontend (Angular) tui làm thêm dashboard sạc realtime (SignalR client) và màn hình đăng ký walk-in.
-
-Phần thanh toán VNPay và ví điện tử do thành viên khác trong nhóm phụ trách.
+- **Luồng phiên sạc realtime:** xây dựng luồng bắt đầu → theo dõi → kết thúc → xuất hóa đơn; `ChargingHub` (SignalR) đẩy % pin, chi phí và thời gian còn lại xuống client; hỗ trợ kết nối lại khi client mất kết nối.
+- **Xử lý nền:** tính phí chiếm chỗ sau khi sạc, theo dõi lịch đặt chỗ, cơ chế nợ của tài xế, tự động khóa/mở tài khoản khi vi phạm quy định kèm email thông báo (`BackgroundService`).
+- **Khách vãng lai:** xác thực QR trụ sạc, gợi ý đăng ký tài khoản sau phiên sạc và đồng bộ dữ liệu, cập nhật giấy tờ xe.
+- **Nghiệp vụ vận hành:** quản lý trạm & trụ sạc (sinh QR code), phương tiện, phân ca nhân viên, lịch sử phiên sạc theo vai trò, thống kê doanh thu.
+- **Dữ liệu & triển khai:** EF Core migrations, seed dữ liệu demo, cấu hình triển khai lên VPS.
 
 ## 🛠 Tech stack
 
@@ -45,4 +42,4 @@ dotnet ef database update
 dotnet run
 ```
 
-Frontend: xem hướng dẫn ở [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client).
+Frontend: xem hướng dẫn tại [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client).
