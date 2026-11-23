@@ -1,45 +1,47 @@
-# ⚡ EvoltStation – EV Charging Management System (Backend API)
+# ⚡ EVoltStation – EV Charging Management System (Backend API)
 
-> Fork từ repository của nhóm: [DatNguyenSE/EVStation-API](https://github.com/DatNguyenSE/EVStation-API) · Frontend: [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client)
+> Forked from [DatNguyenSE/EVStation-API](https://github.com/DatNguyenSE/EVStation-API) · Frontend: [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client)
 > 🔗 **Live demo:** https://evoltstation.io.vn
 
-EvoltStation là nền tảng quản lý trạm sạc xe điện: đặt chỗ, sạc bằng QR, ví điện tử, giám sát phiên sạc thời gian thực và dashboard quản trị.
+EVoltStation is a platform for operating electric-vehicle charging stations. Drivers find stations on a map, reserve a charging slot, start a session by scanning a QR code and pay from an in-app wallet. Operators and managers monitor charging posts in real time, handle incidents and track revenue.
 
-## 👤 Vai trò & đóng góp
+## 🚀 Features
 
-**Backend Developer** · [@nhatanh-dev](https://github.com/nhatanh-dev) · 10/2025 – 11/2025
-
-- **Luồng phiên sạc realtime:** xây dựng luồng bắt đầu → theo dõi → kết thúc → xuất hóa đơn; `ChargingHub` (SignalR) đẩy % pin, chi phí và thời gian còn lại xuống client; hỗ trợ kết nối lại khi client mất kết nối.
-- **Xử lý nền:** tính phí chiếm chỗ sau khi sạc, theo dõi lịch đặt chỗ, cơ chế nợ của tài xế, tự động khóa/mở tài khoản khi vi phạm quy định kèm email thông báo (`BackgroundService`).
-- **Khách vãng lai:** xác thực QR trụ sạc, gợi ý đăng ký tài khoản sau phiên sạc và đồng bộ dữ liệu, cập nhật giấy tờ xe.
-- **Nghiệp vụ vận hành:** quản lý trạm & trụ sạc (sinh QR code), phương tiện, phân ca nhân viên, lịch sử phiên sạc theo vai trò, thống kê doanh thu.
-- **Dữ liệu & triển khai:** EF Core migrations, seed dữ liệu demo, cấu hình triển khai lên VPS.
+- 🗺️ **Station map & reservations:** find nearby stations, filter compatible charging posts and reserve a time slot.
+- ⚡ **QR charging flow:** scan the post's QR code → authenticate → start charging → automatic payment at the end of the session.
+- 📡 **Real-time session monitoring:** battery level, cost and time remaining are pushed to the driver over SignalR.
+- 💳 **E-wallet:** top up through VNPay and view transaction history.
+- ⏱️ **Operating rules:** overstay fees, reservation no-show handling and account restrictions, processed by background services.
+- 🚶 **Walk-in drivers:** charge without an account, then register and keep the session history.
+- 🤖 **Support chatbot** over SignalR.
+- 📊 **Admin & manager dashboards:** revenue analytics, post status, staff assignments and incident reports.
 
 ## 🛠 Tech stack
 
-| Thành phần | Công nghệ |
+| Layer | Technologies |
 |---|---|
 | Backend | .NET 9 Web API, Entity Framework Core, SignalR, ASP.NET Identity (JWT), BackgroundService |
 | Frontend | Angular, Tailwind CSS, DaisyUI, Leaflet, Chart.js |
 | Database | Microsoft SQL Server |
-| Tích hợp | VNPay, Cloudinary, MailKit, QRCoder |
+| Integrations | VNPay, Cloudinary, MailKit, QRCoder |
 
-## 🚀 Tính năng chính
+## 👥 Roles
 
-- 🗺️ **Đặt chỗ & bản đồ:** tìm trạm trên bản đồ, lọc trụ sạc tương thích, giữ chỗ theo khung giờ.
-- ⚡ **Sạc bằng QR:** quét QR → xác thực → kích hoạt sạc → trừ tiền tự động.
-- 💳 **Ví điện tử:** nạp tiền qua cổng thanh toán, lịch sử giao dịch.
-- 🤖 **Chatbot hỗ trợ** qua SignalR.
-- 📊 **Admin dashboard:** doanh thu, trạng thái trụ sạc, xử lý sự cố realtime.
+| Role | Main capabilities |
+|---|---|
+| Driver | Reserve slots, charge via QR, wallet, session history |
+| Operator / Technician | Monitor posts, handle incidents and emergency stops |
+| Manager | Station operations, staff roster, revenue reports |
+| Admin | System configuration, pricing, accounts |
 
-## ⚙️ Chạy local
+## ⚙️ Getting started
 
 ```bash
 git clone https://github.com/DatNguyenSE/EVStation-API.git
 cd EVStation-API
-# Cập nhật connection string trong appsettings.json
+# Update the connection string in appsettings.json
 dotnet ef database update
 dotnet run
 ```
 
-Frontend: xem hướng dẫn tại [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client).
+Frontend setup: see [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client).
