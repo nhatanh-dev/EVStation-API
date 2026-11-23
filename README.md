@@ -1,58 +1,48 @@
-# ⚡ EvoltStation - EV Charging Management System
+# ⚡ EvoltStation – EV Charging Management System (Backend API)
 
-[![Deploy Status](https://img.shields.io/website?url=https%3A%2F%2Fevoltstation.io.vn&label=Live%20Demo)](https://evoltstation.io.vn)
-![Backend](https://img.shields.io/badge/.NET-9.0-purple)
-![Frontend](https://img.shields.io/badge/Angular-20-red)
-![Database](https://img.shields.io/badge/SQL_Server-Latest-lightgrey)
+> 🍴 Đây là bản fork từ repo nhóm [DatNguyenSE/EVStation-API](https://github.com/DatNguyenSE/EVStation-API) · Frontend: [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client)
+> 🔗 **Live demo:** https://evoltstation.io.vn
 
-**EvoltStation** là nền tảng quản lý trạm sạc xe điện toàn diện, tích hợp đặt chỗ thông minh, thanh toán ví điện tử và giám sát thời gian thực.
+EvoltStation là nền tảng quản lý trạm sạc xe điện: đặt chỗ, sạc bằng QR, ví điện tử, giám sát phiên sạc thời gian thực và dashboard quản trị.
 
-🔗 **Live Demo:** [https://evoltstation.io.vn](https://evoltstation.io.vn)
+## 👤 Phần tui làm (nhatanh-dev)
 
----
+Khoảng 37% commit backend (58/156, 10/2025 → 11/2025). Các phần chính:
 
-## 🛠 Tech Stack
+- **Luồng phiên sạc lõi** (bắt đầu → theo dõi trực tiếp → dừng → hóa đơn): tui tạo `ChargingHub` (SignalR) và `ChargingSimulationService` để đẩy % pin, chi phí và thời gian còn lại xuống client theo thời gian thực, thêm API reconnect khi client mất kết nối.
+- **Phí & luật vận hành chạy nền:** phí chiếm chỗ sau khi sạc xong (`IdleFeeService`), theo dõi reservation (`ReservationMonitorService`), cơ chế nợ tài xế, tự động ban/unban khi vi phạm luật đặt chỗ, có gửi email thông báo. Tất cả chạy bằng `BackgroundService`.
+- **Tài xế vãng lai (walk-in):** validate mã QR trụ sạc, gợi ý đăng ký tài khoản sau phiên sạc và đồng bộ dữ liệu khách, upload giấy tờ xe.
+- **Quản lý vận hành:** Station / Charging Post (QR code bằng QRCoder), Vehicle & VehicleModel, phân ca nhân viên (Assignment roster), lịch sử phiên sạc theo từng vai trò, thống kê doanh thu cho Admin/Manager.
+- **Dữ liệu & triển khai:** EF Core migrations + seed dữ liệu demo, cấu hình CORS và deploy lên VPS.
+- Phía frontend (Angular) tui làm thêm dashboard sạc realtime (SignalR client) và màn hình đăng ký walk-in.
 
-| Component | Technologies |
-| :--- | :--- |
-| **Backend** | **.NET 9 Web API**, Entity Framework Core, **SignalR** (Real-time), Identity (JWT). |
-| **Frontend** | **Angular**, Tailwind CSS, DaisyUI, **Leaflet** (Map), Chart.js. |
-| **Database** | Microsoft SQL Server. |
-| **Integrations** | **VNPay** (Payment), **Cloudinary** (Media), **MailKit** (Email), **QRCoder**. |
+Phần thanh toán VNPay và ví điện tử do thành viên khác trong nhóm phụ trách.
 
----
+## 🛠 Tech stack
 
-## 🚀 Key Features
+| Thành phần | Công nghệ |
+|---|---|
+| Backend | .NET 9 Web API, Entity Framework Core, SignalR, ASP.NET Identity (JWT), BackgroundService |
+| Frontend | Angular, Tailwind CSS, DaisyUI, Leaflet, Chart.js |
+| Database | Microsoft SQL Server |
+| Tích hợp | VNPay, Cloudinary, MailKit, QRCoder |
 
-* **🗺️ Smart Booking & Map:** Tìm trạm trên bản đồ tương tác, lọc trụ sạc tương thích và đặt chỗ giữ chỗ (Reservation) theo khung giờ.
-* **⚡ QR Charging Flow:** Quy trình sạc khép kín: Quét QR -> Xác thực người dùng -> Kích hoạt sạc -> Trừ tiền tự động.
-* **💳 E-Wallet System:** Ví điện tử tích hợp, hỗ trợ nạp tiền qua cổng thanh toán và quản lý lịch sử giao dịch.
-* **🤖 AI Support Bot:** Chatbot hỗ trợ khách hàng tích hợp qua SignalR Custom Adapter.
-* **📊 Admin Dashboard:** Thống kê doanh thu, giám sát trạng thái trụ sạc và xử lý báo cáo sự cố thời gian thực.
+## 🚀 Tính năng chính
 
----
+- 🗺️ **Đặt chỗ & bản đồ:** tìm trạm trên bản đồ, lọc trụ sạc tương thích, giữ chỗ theo khung giờ.
+- ⚡ **Sạc bằng QR:** quét QR → xác thực → kích hoạt sạc → trừ tiền tự động.
+- 💳 **Ví điện tử:** nạp tiền qua cổng thanh toán, lịch sử giao dịch.
+- 🤖 **Chatbot hỗ trợ** qua SignalR.
+- 📊 **Admin dashboard:** doanh thu, trạng thái trụ sạc, xử lý sự cố realtime.
 
-## ⚙️ Installation
+## ⚙️ Chạy local
 
-**1. Clone Repo**
 ```bash
-git clone https://github.com/DatNguyenSE/EVStation-Client.git
 git clone https://github.com/DatNguyenSE/EVStation-API.git
-```
-2. Backend Setup (.NET)
-
-```Bash
 cd EVStation-API
-
-# Update connection string in appsettings.json
+# Cập nhật connection string trong appsettings.json
 dotnet ef database update
 dotnet run
 ```
-3. Frontend Setup (Angular)
 
-```Bash
-
-cd EVStation-Client
-npm install
-npm start
-```
+Frontend: xem hướng dẫn ở [EVStation-Client](https://github.com/DatNguyenSE/EVStation-Client).
